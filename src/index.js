@@ -294,11 +294,9 @@ export default class extends Component {
     // related to https://github.com/leecade/react-native-swiper/issues/570
     // contentOffset is not working in react 0.48.x so we need to use scrollTo
     // to emulate offset.
-    if (Platform.OS === 'ios') {
-      if (this.initialRender && this.state.total > 1) {
-        this.scrollView.scrollTo({...offset, animated: false})
-        this.initialRender = false;
-      }
+    if (this.initialRender && this.state.total > 1) {
+      this.scrollView.scrollTo({...offset, animated: false})
+      this.initialRender = false;
     }
 
     this.setState(state)
@@ -463,11 +461,7 @@ export default class extends Component {
     if (state.dir === 'x') x = diff * state.width
     if (state.dir === 'y') y = diff * state.height
 
-    if (Platform.OS !== 'ios') {
-      this.scrollView && this.scrollView[animated ? 'setPage' : 'setPageWithoutAnimation'](diff)
-    } else {
-      this.scrollView && this.scrollView.scrollTo({ x, y, animated })
-    }
+    this.scrollView && this.scrollView.scrollTo({ x, y, animated })
 
     // update scroll state
     this.internals.isScrolling = true
@@ -634,7 +628,7 @@ export default class extends Component {
         style={this.props.scrollViewStyle}>
         {pages}
       </ScrollView>
-    )  
+    )
   }
 
   /**
@@ -666,7 +660,7 @@ export default class extends Component {
     const loopVal = loop ? 1 : 0
     let pages = []
 
-    const pageStyle = [{width: width, height: height}, styles.slide]
+    const pageStyle = [{width: width, height: height}, styles.slide, props.slideStyle]
     const pageStyleLoading = {
       width,
       height,
